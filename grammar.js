@@ -130,7 +130,7 @@ module.exports = grammar({
 		property: ($) =>
 			seq(
 				field('name', $.property_identifier),
-				field('value', optional(seq('=', commaSep($._property_value)))),
+				optional(seq('=', field('value', commaSep($._property_value)))),
 				';'
 			),
 
