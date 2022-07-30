@@ -711,10 +711,6 @@
             "named": false
           },
           {
-            "type": "=",
-            "named": false
-          },
-          {
             "type": "byte_string_literal",
             "named": true
           },
