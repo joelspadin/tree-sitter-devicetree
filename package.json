@@ -48,6 +48,8 @@
       "file-types": [
         "dts",
         "dtsi",
+        "dtso",
+        "its",
         "overlay"
       ],
       "injection-regex": "^(dts|devicetree)$",
