@@ -7,6 +7,7 @@ Delete nodes
     foo: bar {};
     /delete-node/ bar;
     /delete-node/ &foo;
+    /delete-node/ baz@12345;
 };
 
 ---
@@ -22,6 +23,9 @@ Delete nodes
             name: (identifier))
         (delete_node
             name: (reference label: (identifier)))
+        (delete_node
+            name: (identifier)
+            address: (unit_address))
     )
 )
 
