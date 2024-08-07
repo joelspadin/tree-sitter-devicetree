@@ -181,7 +181,13 @@ module.exports = grammar({
 		delete_node: ($) =>
 			seq(
 				'/delete-node/',
-				field('name', choice($.node_identifier, $.reference)),
+				choice(
+					field('name', $.reference),
+					seq(
+						field('name', $.node_identifier),
+						field('address', optional(seq('@', $.unit_address)))
+					)
+				),
 				';'
 			),
 

@@ -373,6 +373,20 @@
     "type": "delete_node",
     "named": true,
     "fields": {
+      "address": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "@",
+            "named": false
+          },
+          {
+            "type": "unit_address",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
