@@ -2,8 +2,7 @@ name: Lint
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - grammar.js
       - package.json
