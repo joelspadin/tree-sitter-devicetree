@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - grammar.js
   pull_request:
-    branches:
-      - '**'
+    paths:
+      - grammar.js
 
 jobs:
   lint:
@@ -15,9 +17,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
+          cache: npm
           node-version: ${{vars.NODE_VERSION}}
       - name: Install modules
-        run: npm install
+        run: npm ci
       - name: Run Prettier
         run: npm run prettier:check
       - name: Run ESLint
