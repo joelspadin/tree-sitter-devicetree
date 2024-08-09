@@ -6,17 +6,21 @@ on:
     branches: [master]
     paths:
       - grammar.js
+      - .github/**
       - src/**
       - test/**
       - bindings/**
       - binding.gyp
+      - package.json
   pull_request:
     paths:
       - grammar.js
+      - .github/**
       - src/**
       - test/**
       - bindings/**
       - binding.gyp
+      - package.json
 
 concurrency:
   group: ${{github.workflow}}-${{github.ref}}

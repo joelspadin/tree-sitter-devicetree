@@ -6,9 +6,13 @@ on:
       - main
     paths:
       - grammar.js
+      - package.json
+      - .github/**
   pull_request:
     paths:
       - grammar.js
+      - package.json
+      - .github/**
 
 jobs:
   lint:
