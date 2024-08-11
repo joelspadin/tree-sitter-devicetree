@@ -618,8 +618,15 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "/delete-node/"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "STRING",
+              "value": "/delete-node/"
+            }
+          }
         },
         {
           "type": "CHOICE",
@@ -682,8 +689,15 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "/delete-property/"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "STRING",
+              "value": "/delete-property/"
+            }
+          }
         },
         {
           "type": "FIELD",
