@@ -428,6 +428,10 @@
       "required": false,
       "types": [
         {
+          "type": "delete_node",
+          "named": true
+        },
+        {
           "type": "dtsi_include",
           "named": true
         },
@@ -1025,6 +1029,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "delete_node",
+          "named": true
+        },
         {
           "type": "dtsi_include",
           "named": true
