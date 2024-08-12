@@ -10,6 +10,8 @@ Delete nodes
     /delete-node/ baz@12345;
 };
 
+/delete-node/ foo;
+
 ---
 
 (document
@@ -27,6 +29,8 @@ Delete nodes
             name: (identifier)
             address: (unit_address))
     )
+    (delete_node
+        name: (identifier))
 )
 
 ========================================================================
@@ -40,6 +44,8 @@ Delete nodes (no spaces)
     /delete-node/baz@12345;
 };
 
+/delete-node/foo;
+
 ---
 
 (document
@@ -57,6 +63,8 @@ Delete nodes (no spaces)
             name: (identifier)
             address: (unit_address))
     )
+    (delete_node
+        name: (identifier))
 )
 
 ========================================================================
