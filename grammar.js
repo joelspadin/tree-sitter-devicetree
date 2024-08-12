@@ -57,6 +57,7 @@ module.exports = grammar({
 				$.omit_if_no_ref,
 				$.node,
 				$.dtsi_include,
+				$.delete_node,
 				$.preproc_include,
 				$.preproc_def,
 				$.preproc_function_def,
@@ -177,7 +178,6 @@ module.exports = grammar({
 				$.preproc_undef
 			),
 
-		// TODO: is delete-node allowed at top level?
 		delete_node: ($) =>
 			seq(
 				token(prec(2, '/delete-node/')),

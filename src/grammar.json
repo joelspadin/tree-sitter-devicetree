@@ -37,6 +37,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "delete_node"
+        },
+        {
+          "type": "SYMBOL",
           "name": "preproc_include"
         },
         {
