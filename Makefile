@@ -1,4 +1,4 @@
-VERSION := 0.11.0
+VERSION := 0.11.1
 
 LANGUAGE_NAME := tree-sitter-devicetree
 
