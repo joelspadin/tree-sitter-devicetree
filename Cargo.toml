@@ -1,9 +1,10 @@
 [package]
 name = "tree-sitter-devicetree"
-description = "devicetree grammar for tree-sitter"
-version = "0.11.1"
-authors = ["Joel Spadin <joelspadin@gmail.com>"]
+description = "Tree-sitter parser for Devicetree files, with support for Zephyr's superset of Devicetree syntax."
+version = "0.12.0"
+authors = ["Joel Spadin"]
 license = "MIT"
+readme = "README.md"
 keywords = ["incremental", "parsing", "tree-sitter", "devicetree"]
 categories = ["parsing", "text-editors"]
 repository = "https://github.com/joelspadin/tree-sitter-devicetree"
@@ -11,18 +12,16 @@ edition = "2021"
 autoexamples = false
 
 build = "bindings/rust/build.rs"
-include = [
-  "bindings/rust/*",
-  "grammar.js",
-  "queries/*",
-  "src/*",
-]
+include = ["bindings/rust/*", "grammar.js", "queries/*", "src/*"]
 
 [lib]
 path = "bindings/rust/lib.rs"
 
 [dependencies]
-tree-sitter = ">= 0.21.0"
+tree-sitter-language = "0.1"
 
 [build-dependencies]
-cc = "1.0.90"
+cc = "1.1.22"
+
+[dev-dependencies]
+tree-sitter = "0.24.3"

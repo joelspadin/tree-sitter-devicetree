@@ -1,4 +1,4 @@
-module github.com/tree-sitter/tree-sitter-devicetree
+module github.com/joelspadin/tree-sitter-devicetree
 
 go 1.22
 
