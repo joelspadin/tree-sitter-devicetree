@@ -17,7 +17,7 @@
     "lint": "eslint grammar.js",
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
-    "test": "node --test bindings/node/*_test.js",
+    "test": "node --test bindings/node/binding_test.js",
     "prepublishOnly": "tree-sitter build --wasm",
     "prettier:check": "prettier --check .",
     "prettier:format": "prettier --write ."
