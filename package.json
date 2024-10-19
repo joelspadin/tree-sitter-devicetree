@@ -14,21 +14,19 @@
   ],
   "scripts": {
     "install": "node-gyp-build",
-    "prebuildify": "prebuildify --napi --strip",
-    "build": "tree-sitter generate --no-bindings",
-    "build:wasm": "tree-sitter build --wasm",
-    "test": "tree-sitter test",
-    "parse": "tree-sitter parse",
     "lint": "eslint grammar.js",
+    "prestart": "tree-sitter build --wasm",
+    "start": "tree-sitter playground",
+    "test": "node --test bindings/node/*_test.js",
     "prettier:check": "prettier --check .",
     "prettier:format": "prettier --write ."
   },
   "dependencies": {
-    "node-addon-api": "^8.1.0",
-    "node-gyp-build": "^4.8.1"
+    "node-addon-api": "^8.2.1",
+    "node-gyp-build": "^4.8.2"
   },
   "peerDependencies": {
-    "tree-sitter": "^0.21.0"
+    "tree-sitter": "^0.21.1"
   },
   "peerDependenciesMeta": {
     "tree_sitter": {
@@ -36,32 +34,19 @@
     }
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.13.0",
+    "eslint-config-treesitter": "^1.0.2",
     "prebuildify": "^6.0.1",
     "prettier": "^3.3.3",
-    "tree-sitter-cli": "^0.22.6"
+    "tree-sitter-cli": "^0.24.3"
   },
-  "tree-sitter": [
-    {
-      "scope": "source.devicetree",
-      "file-types": [
-        "dts",
-        "dtsi",
-        "dtso",
-        "its",
-        "overlay"
-      ],
-      "injection-regex": "^(dts|devicetree)$",
-      "highlights": "queries/highlights.scm"
-    }
-  ],
   "files": [
     "grammar.js",
     "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
     "queries/*",
-    "src/**"
+    "src/**",
+    "*wasm"
   ]
 }
