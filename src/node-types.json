@@ -832,6 +832,47 @@
     }
   },
   {
+    "type": "path",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "path_node",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "path_node",
+    "named": true,
+    "fields": {
+      "address": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "unit_address",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "plugin",
     "named": true,
     "fields": {}
@@ -1541,20 +1582,6 @@
     "type": "reference",
     "named": true,
     "fields": {
-      "address": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "@",
-            "named": false
-          },
-          {
-            "type": "unit_address",
-            "named": true
-          }
-        ]
-      },
       "label": {
         "multiple": false,
         "required": false,
@@ -1564,17 +1591,17 @@
             "named": true
           }
         ]
-      },
-      "path": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "path",
+          "named": true
+        }
+      ]
     }
   },
   {

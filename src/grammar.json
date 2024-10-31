@@ -294,6 +294,60 @@
         }
       ]
     },
+    "path_node": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "/"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_node_or_property"
+            },
+            "named": true,
+            "value": "identifier"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "@"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "address",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "unit_address"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "path": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "path_node"
+      }
+    },
     "_node_reference": {
       "type": "SEQ",
       "members": [
@@ -302,37 +356,8 @@
           "value": "&{"
         },
         {
-          "type": "FIELD",
-          "name": "path",
-          "content": {
-            "type": "SYMBOL",
-            "name": "node_identifier"
-          }
-        },
-        {
-          "type": "FIELD",
-          "name": "address",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "@"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "unit_address"
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
+          "type": "SYMBOL",
+          "name": "path"
         },
         {
           "type": "STRING",
