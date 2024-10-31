@@ -72,8 +72,12 @@ foo: &{/bar@deadbeef} {};
     (node
         label: (identifier)
         name: (reference
-            path: (identifier)
-            address: (unit_address)
+            (path
+                (path_node
+                    name: (identifier)
+                    address: (unit_address)
+                )
+            )
         )
     )
 )

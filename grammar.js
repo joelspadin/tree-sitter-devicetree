@@ -120,13 +120,14 @@ module.exports = grammar({
 
 		_label_reference: ($) => seq('&', field('label', $.label_identifier)),
 
-		_node_reference: ($) =>
+		path_node: ($) =>
 			seq(
-				'&{',
-				field('path', $.node_identifier),
-				field('address', optional(seq('@', $.unit_address))),
-				'}'
+				'/',
+				field('name', alias($._node_or_property, $.identifier)),
+				optional(seq('@', field('address', $.unit_address)))
 			),
+		path: ($) => repeat1($.path_node),
+		_node_reference: ($) => seq('&{', $.path, '}'),
 
 		omit_if_no_ref: ($) =>
 			seq('/omit-if-no-ref/', choice($.node, seq($.reference, ';'))),

@@ -63,3 +63,60 @@ Node addresses
         )
     )
 )
+
+========================================================================
+Node with references
+========================================================================
+/ {
+    foo@100 {
+        ref = <&{/padctl@7009f000}>;
+        ref = <&{/padctl@7009f000/pads/usb2/lanes/usb2-1}>;
+    };
+};
+
+---
+
+(document
+    (node name: (identifier )
+        (node
+            name: (identifier)
+            address: (unit_address)
+          (property
+            name: (identifier)
+            value: (integer_cells (reference
+                (path
+                    (path_node
+                        name: (identifier)
+                        address: (unit_address)
+                    )
+                )
+              )
+            )
+          )
+          (property
+            name: (identifier)
+            value: (integer_cells (reference
+                (path
+                    (path_node
+                        name: (identifier)
+                        address: (unit_address)
+                    )
+                    (path_node
+                        name: (identifier)
+                    )
+                    (path_node
+                        name: (identifier)
+                    )
+                    (path_node
+                        name: (identifier)
+                    )
+                    (path_node
+                        name: (identifier)
+                    )
+                )
+              )
+            )
+          )
+        )
+    )
+)
