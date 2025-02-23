@@ -4,6 +4,8 @@ Name with hyphen
 
 / {
     hyphenated-name = "";
+    -start = "";
+    end- = "";
 };
 
 ---
@@ -11,6 +13,8 @@ Name with hyphen
 (document
     (node
         name: (identifier)
+        (property name: (identifier) value: (string_literal))
+        (property name: (identifier) value: (string_literal))
         (property name: (identifier) value: (string_literal))
     )
 )
@@ -44,6 +48,8 @@ Name with comma
 
 / {
     comma,separated = "";
+    ,start = "";
+    end, = "";
 };
 
 ---
@@ -51,6 +57,8 @@ Name with comma
 (document
     (node
         name: (identifier)
+        (property name: (identifier) value: (string_literal))
+        (property name: (identifier) value: (string_literal))
         (property name: (identifier) value: (string_literal))
     )
 )
@@ -70,6 +78,31 @@ Name with number
 (document
     (node
         name: (identifier)
+        (property name: (identifier) value: (string_literal))
+        (property name: (identifier) value: (string_literal))
+        (property name: (identifier) value: (string_literal))
+    )
+)
+
+========================================================================
+Name with all characters
+========================================================================
+
+/ {
+    ABCXYZ = "";
+    abcxyz = "";
+    0 = "";
+    123456789 = "";
+    ,._+?#- = "";
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (string_literal))
+        (property name: (identifier) value: (string_literal))
         (property name: (identifier) value: (string_literal))
         (property name: (identifier) value: (string_literal))
         (property name: (identifier) value: (string_literal))

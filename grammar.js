@@ -89,11 +89,16 @@ module.exports = grammar({
 				)
 			),
 
-		_label_name: ($) => /[a-zA-Z_][0-9a-zA-Z_]*/,
 		_node_path: ($) => /\/[0-9a-zA-Z/,._+-]*/,
-		_node_or_property: ($) => /[a-zA-Z][0-9a-zA-Z,._+-]*/,
-		_property_with_hash: ($) => /[#0-9a-zA-Z,._+-]*#[#0-9a-zA-Z,._+-]*/,
-		_property_starts_with_number: ($) => /[0-9][#0-9a-zA-Z,._+-]*/,
+
+		// Label names are a subset of node names, which are a subset of property names. Tokenize as the simplest
+		// option that fits the given text, then allow each syntax node to use any of the tokens that are valid for it.
+		// label: $._label_name
+		// node: $._node_name or $._label_name
+		// property: $._property_name, $._node_name, or $._label_name
+		_label_name: ($) => prec(3, /[a-zA-Z_][0-9a-zA-Z_]*/),
+		_node_name: ($) => prec(2, /[0-9a-zA-Z,._+-]+/),
+		_property_name: ($) => prec(1, /[0-9a-zA-Z,._+?#-]+/),
 
 		unit_address: ($) => /[0-9a-zA-Z,._+-]+/,
 
@@ -101,18 +106,13 @@ module.exports = grammar({
 
 		node_identifier: ($) =>
 			alias(
-				choice($._node_or_property, $._node_path, $._label_name),
+				choice($._node_name, $._label_name, $._node_path),
 				$.identifier
 			),
 
 		property_identifier: ($) =>
 			alias(
-				choice(
-					$._node_or_property,
-					$._property_with_hash,
-					$._property_starts_with_number,
-					$._label_name
-				),
+				choice($._node_name, $._property_name, $._label_name),
 				$.identifier
 			),
 
@@ -123,7 +123,7 @@ module.exports = grammar({
 		path_node: ($) =>
 			seq(
 				'/',
-				field('name', alias($._node_or_property, $.identifier)),
+				field('name', alias($._node_name, $.identifier)),
 				optional(seq('@', field('address', $.unit_address)))
 			),
 		path: ($) => repeat1($.path_node),

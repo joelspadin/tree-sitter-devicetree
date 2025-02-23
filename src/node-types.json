@@ -505,6 +505,11 @@
     "fields": {}
   },
   {
+    "type": "identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "incbin",
     "named": true,
     "fields": {
@@ -1694,6 +1699,11 @@
     }
   },
   {
+    "type": "unit_address",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "\n",
     "named": false
   },
@@ -1910,10 +1920,6 @@
     "named": true
   },
   {
-    "type": "identifier",
-    "named": true
-  },
-  {
     "type": "integer_literal",
     "named": true
   },
@@ -1923,10 +1929,6 @@
   },
   {
     "type": "system_lib_string",
-    "named": true
-  },
-  {
-    "type": "unit_address",
     "named": true
   },
   {

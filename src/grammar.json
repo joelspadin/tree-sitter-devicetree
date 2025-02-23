@@ -183,25 +183,33 @@
         ]
       }
     },
-    "_label_name": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z_][0-9a-zA-Z_]*"
-    },
     "_node_path": {
       "type": "PATTERN",
       "value": "\\/[0-9a-zA-Z/,._+-]*"
     },
-    "_node_or_property": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z][0-9a-zA-Z,._+-]*"
+    "_label_name": {
+      "type": "PREC",
+      "value": 3,
+      "content": {
+        "type": "PATTERN",
+        "value": "[a-zA-Z_][0-9a-zA-Z_]*"
+      }
     },
-    "_property_with_hash": {
-      "type": "PATTERN",
-      "value": "[#0-9a-zA-Z,._+-]*#[#0-9a-zA-Z,._+-]*"
+    "_node_name": {
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9a-zA-Z,._+-]+"
+      }
     },
-    "_property_starts_with_number": {
-      "type": "PATTERN",
-      "value": "[0-9][#0-9a-zA-Z,._+-]*"
+    "_property_name": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9a-zA-Z,._+?#-]+"
+      }
     },
     "unit_address": {
       "type": "PATTERN",
@@ -223,15 +231,15 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_node_or_property"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_node_path"
+            "name": "_node_name"
           },
           {
             "type": "SYMBOL",
             "name": "_label_name"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_node_path"
           }
         ]
       },
@@ -245,15 +253,11 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_node_or_property"
+            "name": "_node_name"
           },
           {
             "type": "SYMBOL",
-            "name": "_property_with_hash"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_property_starts_with_number"
+            "name": "_property_name"
           },
           {
             "type": "SYMBOL",
@@ -308,7 +312,7 @@
             "type": "ALIAS",
             "content": {
               "type": "SYMBOL",
-              "name": "_node_or_property"
+              "name": "_node_name"
             },
             "named": true,
             "value": "identifier"
