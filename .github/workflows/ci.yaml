@@ -4,23 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - grammar.js
-      - .github/**
-      - src/**
-      - test/**
-      - bindings/**
-      - binding.gyp
-      - package.json
   pull_request:
-    paths:
-      - grammar.js
-      - .github/**
-      - src/**
-      - test/**
-      - bindings/**
-      - binding.gyp
-      - package.json
 
 concurrency:
   group: ${{github.workflow}}-${{github.ref}}
