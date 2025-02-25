@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-devicetree
 HOMEPAGE_URL := https://github.com/joelspadin/tree-sitter-devicetree
-VERSION := 0.13.0
+VERSION := 0.14.0
 
 # repository
 SRC_DIR := src

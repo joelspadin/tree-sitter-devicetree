@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-devicetree
-        VERSION "0.13.0"
+        VERSION "0.14.0"
         DESCRIPTION "Tree-sitter parser for Devicetree files, with support for Zephyr's superset of Devicetree syntax."
         HOMEPAGE_URL "https://github.com/joelspadin/tree-sitter-devicetree"
         LANGUAGES C)

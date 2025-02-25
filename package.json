@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-devicetree",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Tree-sitter parser for Devicetree files, with support for Zephyr's superset of Devicetree syntax.",
   "license": "MIT",
   "author": "Joel Spadin",
@@ -39,7 +39,7 @@
     "eslint-config-treesitter": "^1.0.2",
     "prebuildify": "^6.0.1",
     "prettier": "^3.5.2",
-    "tree-sitter-cli": "^0.25.2"
+    "tree-sitter-cli": "^0.24.4"
   },
   "files": [
     "grammar.js",

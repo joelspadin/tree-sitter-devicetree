@@ -1,7 +1,12 @@
 # Changelog
 
+## v0.14.0
+
+- Reverted tree-sitter-cli to v0.24.4 due to https://github.com/tree-sitter/tree-sitter/issues/4234.
+
 ## v0.13.0
 
+- Updated to tree-sitter-cli v0.25.2.
 - Changed parsing of node paths to a list of `/`-separated segments instead of a single node.
     - This fixes parsing of node paths with unit addresses in the middle, e.g. `<&/foo@1/bar@2>`.
 - Fixed parsing of property names to allow `?` characters.
@@ -10,7 +15,7 @@
 
 ## v0.12.1
 
-- Updated to tree-sitter v0.24.3.
+- Updated to tree-sitter-cli v0.24.3.
 
 ## v0.11.1
 
@@ -50,11 +55,11 @@
 
 ## v0.5.0
 
-- Updated to tree-sitter v0.20.6
+- Updated to tree-sitter-cli v0.20.6
 
 ## v0.4.0
 
-- Updated to tree-sitter v0.19.4
+- Updated to tree-sitter-cli v0.19.4
 
 ## v0.3.0
 
