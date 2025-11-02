@@ -3,6 +3,7 @@
 ## v0.15.0
 
 - Updated to tree-sitter-cli v0.25
+- Added highlight query support to Rust and Python bindings.
 
 ## v0.14.1
 
