@@ -3849,5 +3849,6 @@
     "property_identifier",
     "parenthesized_expression"
   ],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }

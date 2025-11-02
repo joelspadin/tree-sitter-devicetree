@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.15.0
+
+- Updated to tree-sitter-cli v0.25
+
 ## v0.14.1
 
 - Fixed Swift bindings.
