@@ -26,6 +26,7 @@ jobs:
       - name: Run tests
         uses: tree-sitter/parser-test-action@v3
         with:
+          node-version: ${{vars.NODE_VERSION}}
           test-rust: true
           test-node: true
           test-python: true
