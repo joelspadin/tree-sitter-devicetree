@@ -24,6 +24,11 @@ Preprocessor define
 #define BAR(x) (x & 0x01)
 #undef FOO
 
+#define COMMENT1 0 // an inline comment
+#define COMMENT2 0 /* another inline comment */
+#define COMMENT3 0 /* a comment spanning
+                    * multiple lines */
+
 ---
 
 (document
@@ -41,6 +46,18 @@ Preprocessor define
     (preproc_undef
         name: (identifier)
     )
+    (preproc_def
+        name: (identifier)
+        value: (preproc_arg)
+        (comment))
+    (preproc_def
+        name: (identifier)
+        value: (preproc_arg)
+        (comment))
+    (preproc_def
+        name: (identifier)
+        value: (preproc_arg)
+        (comment))
 )
 
 ================================================================================
