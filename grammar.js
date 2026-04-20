@@ -421,7 +421,7 @@ module.exports = grammar({
                 token.immediate(/\r?\n/)
             ),
 
-        preproc_arg: ($) => token(prec(-1, repeat1(/.|\\\r?\n/))),
+        preproc_arg: ($) => token(prec(-1, /\S([^/\n]|\/[^/*]|\\\r?\n)*/)),
 
         ...preprocIf('', ($) => $._top_level_item),
         ...preprocIf('_in_node', ($) => $._node_members),

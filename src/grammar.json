@@ -2225,11 +2225,8 @@
         "type": "PREC",
         "value": -1,
         "content": {
-          "type": "REPEAT1",
-          "content": {
-            "type": "PATTERN",
-            "value": ".|\\\\\\r?\\n"
-          }
+          "type": "PATTERN",
+          "value": "\\S([^/\\n]|\\/[^/*]|\\\\\\r?\\n)*"
         }
       }
     },
