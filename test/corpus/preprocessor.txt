@@ -548,3 +548,21 @@ Comments inside a define value
     (preproc_def name: (identifier) value: (preproc_arg) (comment))
     (preproc_def name: (identifier) value: (preproc_arg))
 )
+
+========================================================================
+Slashes and escapes in a define value
+========================================================================
+
+#define S "a/\"b" /* c */ "x/\n"
+#define T a/\x
+#define U 1 /* trailing */
+#define V 2
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+)

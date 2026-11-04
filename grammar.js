@@ -40,9 +40,10 @@ const PREPROC_ARG_PIECE = choice(
     /\/[^\s/*\\]/,
     /\/[ \t\f\v]/,
     /\/\\\r?\n/,
+    /\/\\[^\r\n]/,
     /\\[^\r\n]/
 );
-const PREPROC_ARG_SPACE = choice(/[ \t\f\v\r]/, /\\\r?\n/);
+const PREPROC_ARG_SPACE = choice(/[ \t\f\v]/, /\\\r?\n/);
 const BLOCK_COMMENT = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//;
 
 module.exports = grammar({
@@ -502,9 +503,9 @@ module.exports = grammar({
             token(prec(2, /#[ \t]*(error|warning|pragma|line)/)),
 
         // The rest of the logical line. Block comments between parts of the value stay inside it, as the
-        // preprocessor sees them; a comment at the end (and any line comment, which always runs to the end
-        // of the line) is left out and parsed as a comment. A `/` directly before a newline is not consumed,
-        // so the value cannot run into the next line.
+        // preprocessor sees them; a comment that ends the line (and any line comment, which always runs to
+        // the end of the line) is left out and parsed as a comment. A `/` directly before a newline is not
+        // consumed, so the value cannot run into the next line.
         preproc_arg: ($) =>
             token(
                 prec(

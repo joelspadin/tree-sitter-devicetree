@@ -2472,6 +2472,10 @@
                 },
                 {
                   "type": "PATTERN",
+                  "value": "\\/\\\\[^\\r\\n]"
+                },
+                {
+                  "type": "PATTERN",
                   "value": "\\\\[^\\r\\n]"
                 }
               ]
@@ -2496,7 +2500,7 @@
                         "members": [
                           {
                             "type": "PATTERN",
-                            "value": "[ \\t\\f\\v\\r]"
+                            "value": "[ \\t\\f\\v]"
                           },
                           {
                             "type": "PATTERN",
@@ -2522,6 +2526,10 @@
                           {
                             "type": "PATTERN",
                             "value": "\\/\\\\\\r?\\n"
+                          },
+                          {
+                            "type": "PATTERN",
+                            "value": "\\/\\\\[^\\r\\n]"
                           },
                           {
                             "type": "PATTERN",
