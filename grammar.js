@@ -36,17 +36,21 @@ const PREC = {
 
 // Pieces of a preprocessor directive's argument (preproc_arg). A string or character literal is
 // one piece, so comment markers inside it stay part of the value; a quote can only start one.
-const STRING_PIECE = /\/?"([^"\\\n]|\\(.|\r?\n))*"/;
-const CHAR_PIECE = /\/?'([^'\\\n]|\\(.|\r?\n))*'/;
-// An unterminated quote runs to the end of the value, e.g. the apostrophe in `#error don't`.
-const UNTERMINATED_QUOTE = /\/?["']([^"'\\\n]|\\(.|\r?\n))*/;
+const STRING_PIECE = /[\/\\]?"([^"\\\n]|\\(.|\r?\n))*"/;
+const CHAR_PIECE = /[\/\\]?'([^'\\\n]|\\(.|\r?\n))*'/;
+// An unterminated quote runs to the end of the value, e.g. the apostrophe in `#error don't`; the
+// other kind of quote is plain text inside it.
+const UNTERMINATED_QUOTE = choice(
+    /[\/\\]?"([^"\\\n]|\\(.|\r?\n))*/,
+    /[\/\\]?'([^'\\\n]|\\(.|\r?\n))*/
+);
 const PREPROC_ARG_PIECE = choice(
     /[^\s/\\"']/,
     /\/[^\s/*\\"']/,
     /\/[ \t\f\v]/,
     /\/\\\r?\n/,
     /\/\\[^\r\n]/,
-    /\\[^\r\n]/,
+    /\\[^\r\n"']/,
     STRING_PIECE,
     CHAR_PIECE
 );

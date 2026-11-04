@@ -676,3 +676,20 @@ it//here"
     (preproc_def name: (identifier) value: (preproc_arg))
     (preproc_call directive: (preproc_directive) argument: (preproc_arg))
     (preproc_call directive: (preproc_directive) argument: (preproc_arg)))
+
+========================================================================
+Quotes of the other kind after an unterminated quote or a backslash
+========================================================================
+
+#error don't "x"
+#warning don't "x" // c
+#define P \"a" // b
+#define Q "x 'y" // c
+
+---
+
+(document
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment)))
