@@ -40,3 +40,6 @@ Package.resolved linguist-generated
 bindings/zig/* linguist-generated
 build.zig linguist-generated
 build.zig.zon linguist-generated
+
+# Corpus test whose input has CRLF line endings
+test/corpus/crlf.txt -text

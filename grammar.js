@@ -46,6 +46,10 @@ const PREPROC_ARG_PIECE = choice(
 const PREPROC_ARG_SPACE = choice(/[ \t\f\v]/, /\\\r?\n/);
 const BLOCK_COMMENT = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//;
 
+// The end of a preprocessor line. Spaces before the newline are part of it, so they may follow a
+// directive's last token or a comment that ends the line.
+const preprocessorLineEnd = () => /\r?\n/;
+
 module.exports = grammar({
     name: 'devicetree',
 
@@ -438,7 +442,7 @@ module.exports = grammar({
                     'path',
                     choice($.string_literal, $.system_lib_string, $.identifier)
                 ),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         preproc_def: ($) =>
@@ -446,7 +450,7 @@ module.exports = grammar({
                 preprocessor('define'),
                 field('name', $.identifier),
                 field('value', optional($.preproc_arg)),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         preproc_function_def: ($) =>
@@ -455,7 +459,7 @@ module.exports = grammar({
                 field('name', $.identifier),
                 field('parameters', $.preproc_params),
                 field('value', optional($.preproc_arg)),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         preproc_params: ($) =>
@@ -469,7 +473,7 @@ module.exports = grammar({
             seq(
                 preprocessor('undef'),
                 field('name', $.identifier),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         _preproc_directive: ($) =>
@@ -492,7 +496,7 @@ module.exports = grammar({
                     )
                 ),
                 field('argument', optional($.preproc_arg)),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         preproc_directive: ($) => /#[ \t]*[a-zA-Z0-9]\w*/,
@@ -502,10 +506,11 @@ module.exports = grammar({
         _preproc_known_directive: ($) =>
             token(prec(2, /#[ \t]*(error|warning|pragma|line)/)),
 
-        // The rest of the logical line. Block comments between parts of the value stay inside it, as the
-        // preprocessor sees them; a comment that ends the line (and any line comment, which always runs to
-        // the end of the line) is left out and parsed as a comment. A `/` directly before a newline is not
-        // consumed, so the value cannot run into the next line.
+        // The rest of the logical line, from its first to its last non-blank character. Block comments
+        // between parts of the value stay inside it, as the preprocessor sees them; a comment that ends the
+        // line (and any line comment, which always runs to the end of the line) is left out and parsed as a
+        // comment. A `/` directly before a newline is not consumed, so the value cannot run into the next
+        // line.
         preproc_arg: ($) =>
             token(
                 prec(
@@ -514,8 +519,10 @@ module.exports = grammar({
                         PREPROC_ARG_PIECE,
                         repeat(
                             seq(
-                                repeat(BLOCK_COMMENT),
-                                choice(PREPROC_ARG_SPACE, PREPROC_ARG_PIECE)
+                                repeat(
+                                    choice(BLOCK_COMMENT, PREPROC_ARG_SPACE)
+                                ),
+                                PREPROC_ARG_PIECE
                             )
                         )
                     )

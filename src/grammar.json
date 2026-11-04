@@ -2130,11 +2130,8 @@
           }
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "PATTERN",
+          "value": "\\r?\\n"
         }
       ]
     },
@@ -2182,11 +2179,8 @@
           }
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "PATTERN",
+          "value": "\\r?\\n"
         }
       ]
     },
@@ -2242,11 +2236,8 @@
           }
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "PATTERN",
+          "value": "\\r?\\n"
         }
       ]
     },
@@ -2345,11 +2336,8 @@
           }
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "PATTERN",
+          "value": "\\r?\\n"
         }
       ]
     },
@@ -2420,11 +2408,8 @@
           }
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "PATTERN",
+          "value": "\\r?\\n"
         }
       ]
     },
@@ -2488,54 +2473,54 @@
                   {
                     "type": "REPEAT",
                     "content": {
-                      "type": "PATTERN",
-                      "value": "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/"
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "PATTERN",
+                          "value": "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/"
+                        },
+                        {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "PATTERN",
+                              "value": "[ \\t\\f\\v]"
+                            },
+                            {
+                              "type": "PATTERN",
+                              "value": "\\\\\\r?\\n"
+                            }
+                          ]
+                        }
+                      ]
                     }
                   },
                   {
                     "type": "CHOICE",
                     "members": [
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "PATTERN",
-                            "value": "[ \\t\\f\\v]"
-                          },
-                          {
-                            "type": "PATTERN",
-                            "value": "\\\\\\r?\\n"
-                          }
-                        ]
+                        "type": "PATTERN",
+                        "value": "[^\\s/\\\\]"
                       },
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "PATTERN",
-                            "value": "[^\\s/\\\\]"
-                          },
-                          {
-                            "type": "PATTERN",
-                            "value": "\\/[^\\s/*\\\\]"
-                          },
-                          {
-                            "type": "PATTERN",
-                            "value": "\\/[ \\t\\f\\v]"
-                          },
-                          {
-                            "type": "PATTERN",
-                            "value": "\\/\\\\\\r?\\n"
-                          },
-                          {
-                            "type": "PATTERN",
-                            "value": "\\/\\\\[^\\r\\n]"
-                          },
-                          {
-                            "type": "PATTERN",
-                            "value": "\\\\[^\\r\\n]"
-                          }
-                        ]
+                        "type": "PATTERN",
+                        "value": "\\/[^\\s/*\\\\]"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "\\/[ \\t\\f\\v]"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "\\/\\\\\\r?\\n"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "\\/\\\\[^\\r\\n]"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "\\\\[^\\r\\n]"
                       }
                     ]
                   }

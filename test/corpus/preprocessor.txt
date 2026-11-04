@@ -566,3 +566,35 @@ Slashes and escapes in a define value
     (preproc_def name: (identifier) value: (preproc_arg) (comment))
     (preproc_def name: (identifier) value: (preproc_arg))
 )
+
+========================================================================
+Trailing spaces after a directive
+========================================================================
+
+#define A 1 /* trailing */  	
+#define B 2 // trailing  	
+#define C 3  
+#define D
+#include "a.h"  
+#undef C 	
+#define E
+
+/ {
+    p = <A>;
+};
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier))
+    (preproc_include path: (string_literal))
+    (preproc_undef name: (identifier))
+    (preproc_def name: (identifier))
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (integer_cells (identifier)))
+    )
+)
