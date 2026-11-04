@@ -46,8 +46,8 @@ const PREPROC_ARG_PIECE = choice(
 const PREPROC_ARG_SPACE = choice(/[ \t\f\v]/, /\\\r?\n/);
 const BLOCK_COMMENT = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//;
 
-// The end of a preprocessor line. Spaces before the newline are part of it, so they may follow a
-// directive's last token or a comment that ends the line.
+// The end of a preprocessor line. It is not token.immediate, so blanks after a directive's last token
+// or after a comment that ends the line are skipped as whitespace.
 const preprocessorLineEnd = () => /\r?\n/;
 
 module.exports = grammar({
