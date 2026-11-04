@@ -1614,10 +1614,6 @@
         "required": false,
         "types": [
           {
-            "type": ",",
-            "named": false
-          },
-          {
             "type": "byte_string_literal",
             "named": true
           },

@@ -364,3 +364,25 @@ Macro as property value
         )
     )
 )
+
+========================================================================
+Bits on a later list element
+========================================================================
+
+/ {
+    data = <0 1>, /bits/ 16 <0x1234 0x5678>;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property
+            name: (identifier)
+            value: (integer_cells (integer_literal) (integer_literal))
+            bits: (integer_literal)
+            value: (integer_cells (integer_literal) (integer_literal))
+        )
+    )
+)

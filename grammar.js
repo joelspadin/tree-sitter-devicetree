@@ -158,8 +158,13 @@ module.exports = grammar({
                 optional(
                     seq(
                         '=',
-                        field('bits', optional($._bits)),
-                        field('value', commaSep($._property_value))
+                        // dtc accepts /bits/ before any cell array of the list, not just the first.
+                        commaSep(
+                            seq(
+                                field('bits', optional($._bits)),
+                                field('value', $._property_value)
+                            )
+                        )
                     )
                 ),
                 ';'
