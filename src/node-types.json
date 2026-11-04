@@ -40,6 +40,14 @@
           "named": true
         },
         {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "system_lib_string",
+          "named": true
+        },
+        {
           "type": "unary_expression",
           "named": true
         }

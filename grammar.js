@@ -520,8 +520,19 @@ module.exports = grammar({
                 )
             ),
 
+        // String and <system> arguments cover __has_include("file") and __has_include(<file>).
         preproc_argument_list: ($) =>
-            seq('(', commaSep($._preproc_expression), ')'),
+            seq(
+                '(',
+                commaSep(
+                    choice(
+                        $._preproc_expression,
+                        $.string_literal,
+                        $.system_lib_string
+                    )
+                ),
+                ')'
+            ),
 
         preproc_binary_expression: ($) => {
             const table = [

@@ -386,3 +386,32 @@ Other directives
         (node name: (identifier))
     )
 )
+
+========================================================================
+Has include
+========================================================================
+
+#if __has_include(<dt-bindings/clock/clocks.h>)
+#include <dt-bindings/clock/clocks.h>
+#elif __has_include("local-clocks.h")
+#include "local-clocks.h"
+#endif
+
+---
+
+(document
+    (preproc_if
+        condition: (call_expression
+            function: (identifier)
+            arguments: (argument_list (system_lib_string))
+        )
+        (preproc_include path: (system_lib_string))
+        alternative: (preproc_elif
+            condition: (call_expression
+                function: (identifier)
+                arguments: (argument_list (string_literal))
+            )
+            (preproc_include path: (string_literal))
+        )
+    )
+)
