@@ -639,3 +639,40 @@ Macros used as statements in a node body
         (node
             name: (identifier)
             (preproc_include path: (string_literal)))))
+
+========================================================================
+Comment markers inside quotes in a define value
+========================================================================
+
+#define A "x//y" /* t */
+#define B "http://x"
+#define F(k) "//k" k
+#define C "q\"/*r" // tail
+#define D 1 /* .. */ 2
+#define E "a\\" /* c */
+#define G "spl\
+it//here"
+#define H '/' '"' 3
+#define I a/"x//y"
+#define J 1 /* it's */ 2
+#error don't do this
+#warning "unterminated
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_function_def
+        name: (identifier)
+        parameters: (preproc_params (identifier))
+        value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg)))
