@@ -65,3 +65,32 @@ Property value expressions
         )
     )
 )
+========================================================================
+Character literals
+========================================================================
+
+/ {
+    pinmux = <'A' PINMUX('B', 3) '\n'>;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property
+            name: (identifier)
+            value: (integer_cells
+                (char_literal (character))
+                (call_expression
+                    function: (identifier)
+                    arguments: (argument_list
+                        (char_literal (character))
+                        (integer_literal)
+                    )
+                )
+                (char_literal (escape_sequence))
+            )
+        )
+    )
+)

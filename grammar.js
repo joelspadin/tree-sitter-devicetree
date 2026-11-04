@@ -247,6 +247,7 @@ module.exports = grammar({
         _integer_cell_items: ($) =>
             choice(
                 $.integer_literal,
+                $.char_literal,
                 $.reference,
                 $.parenthesized_expression,
                 $.identifier,
@@ -311,6 +312,16 @@ module.exports = grammar({
             );
         },
 
+        char_literal: ($) =>
+            seq(
+                "'",
+                choice(
+                    $.escape_sequence,
+                    alias(token.immediate(/[^\n'\\]/), $.character)
+                ),
+                "'"
+            ),
+
         identifier: ($) => /[a-zA-Z_]\w*/,
 
         _expression: ($) =>
@@ -321,6 +332,7 @@ module.exports = grammar({
                 $.call_expression,
                 $.identifier,
                 $.integer_literal,
+                $.char_literal,
                 $.parenthesized_expression
             ),
 
