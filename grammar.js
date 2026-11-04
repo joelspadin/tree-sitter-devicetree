@@ -223,7 +223,11 @@ module.exports = grammar({
                 $.string_literal,
                 $.byte_string_literal,
                 $.reference,
-                $.incbin
+                $.incbin,
+                // A macro that the C preprocessor expands to a whole value, e.g.
+                // `function = LED_FUNCTION_STATUS;` or `reg = REG(0x1000);`.
+                $.identifier,
+                $.call_expression
             ),
 
         integer_cells: ($) => seq('<', repeat($._integer_cell_items), '>'),

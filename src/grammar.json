@@ -831,6 +831,14 @@
         {
           "type": "SYMBOL",
           "name": "incbin"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "call_expression"
         }
       ]
     },
