@@ -62,6 +62,10 @@ module.exports = grammar({
         $.parenthesized_expression,
     ],
 
+    // A bare macro statement followed by a directive reads like a node name followed by
+    // directives before its body; the token after the directives decides.
+    conflicts: ($) => [[$.node, $.macro_invocation]],
+
     rules: {
         document: ($) => repeat($._top_level_item),
 
@@ -207,7 +211,21 @@ module.exports = grammar({
                 alias($.preproc_if_in_node, $.preproc_if),
                 alias($.preproc_ifdef_in_node, $.preproc_ifdef),
                 $.preproc_undef,
-                $.preproc_call
+                $.preproc_call,
+                $.macro_invocation
+            ),
+
+        // A macro used as a statement in a node body, which the preprocessor expands to
+        // properties or nodes, e.g. `PIN(a, 1);` or a bare `EXTRA_PROPERTIES`. A bare
+        // name followed by `;` stays a property, as dtc reads it.
+        macro_invocation: ($) =>
+            choice(
+                seq(
+                    field('name', alias($._label_name, $.identifier)),
+                    field('arguments', $.argument_list),
+                    optional(';')
+                ),
+                field('name', alias($._label_name, $.identifier))
             ),
 
         delete_node: ($) =>

@@ -598,3 +598,44 @@ Trailing spaces after a directive
         (property name: (identifier) value: (integer_cells (identifier)))
     )
 )
+
+========================================================================
+Macros used as statements in a node body
+========================================================================
+
+/ {
+    pins {
+        PIN(a-0, UP, FAST);
+        CONFIG_MACRO(1, 2)
+        prop = <1>;
+        flag;
+        EXTRA_PROPERTIES
+    };
+    split
+#include "split.h"
+    {
+    };
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (node
+            name: (identifier)
+            (macro_invocation
+                name: (identifier)
+                arguments: (argument_list
+                    (binary_expression left: (identifier) right: (integer_literal))
+                    (identifier)
+                    (identifier)))
+            (macro_invocation
+                name: (identifier)
+                arguments: (argument_list (integer_literal) (integer_literal)))
+            (property name: (identifier) value: (integer_cells (integer_literal)))
+            (property name: (identifier))
+            (macro_invocation name: (identifier)))
+        (node
+            name: (identifier)
+            (preproc_include path: (string_literal)))))
