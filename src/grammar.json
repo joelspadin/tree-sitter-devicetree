@@ -63,6 +63,10 @@
         {
           "type": "SYMBOL",
           "name": "preproc_undef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_call"
         }
       ]
     },
@@ -649,6 +653,10 @@
         {
           "type": "SYMBOL",
           "name": "preproc_undef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_call"
         }
       ]
     },
@@ -2230,6 +2238,71 @@
           }
         }
       ]
+    },
+    "preproc_call": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "directive",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "preproc_directive"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_preproc_known_directive"
+                },
+                "named": true,
+                "value": "preproc_directive"
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "argument",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "preproc_arg"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\r?\\n"
+          }
+        }
+      ]
+    },
+    "preproc_directive": {
+      "type": "PATTERN",
+      "value": "#[ \\t]*[a-zA-Z0-9]\\w*"
+    },
+    "_preproc_known_directive": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 2,
+        "content": {
+          "type": "PATTERN",
+          "value": "#[ \\t]*(error|warning|pragma|line)"
+        }
+      }
     },
     "preproc_arg": {
       "type": "TOKEN",

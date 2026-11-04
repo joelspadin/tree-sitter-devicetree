@@ -355,3 +355,34 @@ Preprocessor expressions
         )
     )
 )
+
+========================================================================
+Other directives
+========================================================================
+
+#ifndef CAMERA_MODEL
+#error "Camera model should be defined by the board file"
+#endif
+#pragma once
+
+/ {
+    #address-cells = <1>;
+#warning "deprecated node"
+    node {};
+};
+
+---
+
+(document
+    (preproc_ifdef
+        name: (identifier)
+        (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    )
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (integer_cells (integer_literal)))
+        (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+        (node name: (identifier))
+    )
+)

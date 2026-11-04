@@ -63,7 +63,8 @@ module.exports = grammar({
                 $.preproc_function_def,
                 $.preproc_if,
                 $.preproc_ifdef,
-                $.preproc_undef
+                $.preproc_undef,
+                $.preproc_call
             ),
 
         _label: ($) => seq(field('label', $.label_identifier), ':'),
@@ -177,7 +178,8 @@ module.exports = grammar({
                 $.preproc_function_def,
                 alias($.preproc_if_in_node, $.preproc_if),
                 alias($.preproc_ifdef_in_node, $.preproc_ifdef),
-                $.preproc_undef
+                $.preproc_undef,
+                $.preproc_call
             ),
 
         delete_node: ($) =>
@@ -425,6 +427,27 @@ module.exports = grammar({
                 field('name', $.identifier),
                 token.immediate(/\r?\n/)
             ),
+
+        // Any other directive, e.g. #error, #warning, #pragma or #line.
+        preproc_call: ($) =>
+            seq(
+                field(
+                    'directive',
+                    choice(
+                        $.preproc_directive,
+                        alias($._preproc_known_directive, $.preproc_directive)
+                    )
+                ),
+                field('argument', optional($.preproc_arg)),
+                token.immediate(/\r?\n/)
+            ),
+
+        preproc_directive: ($) => /#[ \t]*[a-zA-Z0-9]\w*/,
+
+        // Property names may start with "#" (e.g. #address-cells), so inside a node only these
+        // directives take precedence over a property name.
+        _preproc_known_directive: ($) =>
+            token(prec(2, /#[ \t]*(error|warning|pragma|line)/)),
 
         preproc_arg: ($) => token(prec(-1, /\S([^/\n]|\/[^/*]|\\\r?\n)*/)),
 

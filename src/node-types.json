@@ -457,6 +457,10 @@
           "named": true
         },
         {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
           "type": "preproc_def",
           "named": true
         },
@@ -752,6 +756,10 @@
           "named": true
         },
         {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
           "type": "preproc_def",
           "named": true
         },
@@ -887,6 +895,32 @@
     "fields": {}
   },
   {
+    "type": "preproc_call",
+    "named": true,
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "preproc_arg",
+            "named": true
+          }
+        ]
+      },
+      "directive": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "preproc_directive",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "preproc_def",
     "named": true,
     "fields": {
@@ -1017,6 +1051,10 @@
           "named": true
         },
         {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
           "type": "preproc_def",
           "named": true
         },
@@ -1109,6 +1147,10 @@
           "named": true
         },
         {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
           "type": "preproc_def",
           "named": true
         },
@@ -1173,6 +1215,10 @@
         },
         {
           "type": "plugin",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
           "named": true
         },
         {
@@ -1332,6 +1378,10 @@
           "named": true
         },
         {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
           "type": "preproc_def",
           "named": true
         },
@@ -1429,6 +1479,10 @@
         },
         {
           "type": "plugin",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
           "named": true
         },
         {
@@ -1938,6 +1992,10 @@
   },
   {
     "type": "preproc_arg",
+    "named": true
+  },
+  {
+    "type": "preproc_directive",
     "named": true
   },
   {
