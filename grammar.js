@@ -140,7 +140,11 @@ module.exports = grammar({
                     field('name', $.reference),
                     seq(
                         field('name', $.node_identifier),
-                        field('address', optional(seq('@', $.unit_address)))
+                        // dtc accepts an empty unit address (`port@ { ... };`).
+                        field(
+                            'address',
+                            optional(seq('@', optional($.unit_address)))
+                        )
                     )
                 ),
                 '{',

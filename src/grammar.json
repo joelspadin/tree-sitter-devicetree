@@ -450,8 +450,16 @@
                             "value": "@"
                           },
                           {
-                            "type": "SYMBOL",
-                            "name": "unit_address"
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "unit_address"
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
                           }
                         ]
                       },
