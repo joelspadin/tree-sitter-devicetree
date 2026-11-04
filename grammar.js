@@ -242,7 +242,14 @@ module.exports = grammar({
                 $.call_expression
             ),
 
-        integer_cells: ($) => seq('<', repeat($._integer_cell_items), '>'),
+        integer_cells: ($) => seq('<', repeat($._integer_cell_content), '>'),
+
+        _integer_cell_content: ($) =>
+            choice(
+                $._integer_cell_items,
+                alias($.preproc_if_in_cells, $.preproc_if),
+                alias($.preproc_ifdef_in_cells, $.preproc_ifdef)
+            ),
 
         _integer_cell_items: ($) =>
             choice(
@@ -475,6 +482,7 @@ module.exports = grammar({
 
         ...preprocIf('', ($) => $._top_level_item),
         ...preprocIf('_in_node', ($) => $._node_members),
+        ...preprocIf('_in_cells', ($) => $._integer_cell_content),
 
         _preproc_expression: ($) =>
             choice(

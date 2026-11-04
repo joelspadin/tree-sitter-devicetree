@@ -415,3 +415,48 @@ Has include
         )
     )
 )
+
+========================================================================
+Preprocessor conditionals in cells
+========================================================================
+
+/ {
+    dais = <&rsnd_port0
+            &rsnd_port1
+#ifdef SOC_HAS_HDMI1
+            &rsnd_port2
+#endif
+#if NUM_PORTS > 3
+            &rsnd_port3
+#else
+            0
+#endif
+    >;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property
+            name: (identifier)
+            value: (integer_cells
+                (reference label: (identifier))
+                (reference label: (identifier))
+                (preproc_ifdef
+                    name: (identifier)
+                    (reference label: (identifier))
+                )
+                (preproc_if
+                    condition: (binary_expression
+                        left: (identifier)
+                        right: (integer_literal)
+                    )
+                    (reference label: (identifier))
+                    alternative: (preproc_else (integer_literal))
+                )
+            )
+        )
+    )
+)
