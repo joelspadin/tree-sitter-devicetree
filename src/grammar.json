@@ -594,6 +594,10 @@
       "members": [
         {
           "type": "SYMBOL",
+          "name": "dtsi_include"
+        },
+        {
+          "type": "SYMBOL",
           "name": "delete_property"
         },
         {

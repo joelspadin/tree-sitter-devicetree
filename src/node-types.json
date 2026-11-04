@@ -740,6 +740,10 @@
           "named": true
         },
         {
+          "type": "dtsi_include",
+          "named": true
+        },
+        {
           "type": "node",
           "named": true
         },

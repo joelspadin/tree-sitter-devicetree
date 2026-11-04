@@ -166,6 +166,7 @@ module.exports = grammar({
 
         _node_members: ($) =>
             choice(
+                $.dtsi_include,
                 $.delete_property,
                 $.delete_node,
                 $.omit_if_no_ref,
