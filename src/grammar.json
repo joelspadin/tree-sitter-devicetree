@@ -2172,11 +2172,8 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "preproc_arg"
-                }
+                "type": "SYMBOL",
+                "name": "preproc_arg"
               },
               {
                 "type": "BLANK"
@@ -2235,11 +2232,8 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "preproc_arg"
-                }
+                "type": "SYMBOL",
+                "name": "preproc_arg"
               },
               {
                 "type": "BLANK"
@@ -2455,8 +2449,92 @@
         "type": "PREC",
         "value": -1,
         "content": {
-          "type": "PATTERN",
-          "value": "\\S([^/\\n]|\\/[^/*]|\\\\\\r?\\n)*"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\s/\\\\]"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\/[^\\s/*\\\\]"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\/[ \\t\\f\\v]"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\/\\\\\\r?\\n"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\\\[^\\r\\n]"
+                }
+              ]
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/"
+                    }
+                  },
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "PATTERN",
+                            "value": "[ \\t\\f\\v\\r]"
+                          },
+                          {
+                            "type": "PATTERN",
+                            "value": "\\\\\\r?\\n"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "PATTERN",
+                            "value": "[^\\s/\\\\]"
+                          },
+                          {
+                            "type": "PATTERN",
+                            "value": "\\/[^\\s/*\\\\]"
+                          },
+                          {
+                            "type": "PATTERN",
+                            "value": "\\/[ \\t\\f\\v]"
+                          },
+                          {
+                            "type": "PATTERN",
+                            "value": "\\/\\\\\\r?\\n"
+                          },
+                          {
+                            "type": "PATTERN",
+                            "value": "\\\\[^\\r\\n]"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
     },

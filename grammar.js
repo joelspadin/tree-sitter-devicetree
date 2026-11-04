@@ -34,6 +34,17 @@ const PREC = {
     SUBSCRIPT: 16,
 };
 
+// Pieces of a preprocessor directive's argument (preproc_arg).
+const PREPROC_ARG_PIECE = choice(
+    /[^\s/\\]/,
+    /\/[^\s/*\\]/,
+    /\/[ \t\f\v]/,
+    /\/\\\r?\n/,
+    /\\[^\r\n]/
+);
+const PREPROC_ARG_SPACE = choice(/[ \t\f\v\r]/, /\\\r?\n/);
+const BLOCK_COMMENT = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//;
+
 module.exports = grammar({
     name: 'devicetree',
 
@@ -429,12 +440,11 @@ module.exports = grammar({
                 token.immediate(/\r?\n/)
             ),
 
-        // A comment between the lines of a multi-line value splits it into several preproc_arg nodes.
         preproc_def: ($) =>
             seq(
                 preprocessor('define'),
                 field('name', $.identifier),
-                field('value', optional(repeat1($.preproc_arg))),
+                field('value', optional($.preproc_arg)),
                 token.immediate(/\r?\n/)
             ),
 
@@ -443,7 +453,7 @@ module.exports = grammar({
                 preprocessor('define'),
                 field('name', $.identifier),
                 field('parameters', $.preproc_params),
-                field('value', optional(repeat1($.preproc_arg))),
+                field('value', optional($.preproc_arg)),
                 token.immediate(/\r?\n/)
             ),
 
@@ -491,7 +501,25 @@ module.exports = grammar({
         _preproc_known_directive: ($) =>
             token(prec(2, /#[ \t]*(error|warning|pragma|line)/)),
 
-        preproc_arg: ($) => token(prec(-1, /\S([^/\n]|\/[^/*]|\\\r?\n)*/)),
+        // The rest of the logical line. Block comments between parts of the value stay inside it, as the
+        // preprocessor sees them; a comment at the end (and any line comment, which always runs to the end
+        // of the line) is left out and parsed as a comment. A `/` directly before a newline is not consumed,
+        // so the value cannot run into the next line.
+        preproc_arg: ($) =>
+            token(
+                prec(
+                    -1,
+                    seq(
+                        PREPROC_ARG_PIECE,
+                        repeat(
+                            seq(
+                                repeat(BLOCK_COMMENT),
+                                choice(PREPROC_ARG_SPACE, PREPROC_ARG_PIECE)
+                            )
+                        )
+                    )
+                )
+            ),
 
         ...preprocIf('', ($) => $._top_level_item),
         ...preprocIf('_in_node', ($) => $._node_members),

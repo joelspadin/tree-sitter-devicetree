@@ -509,8 +509,6 @@ Comments inside a multi-line define
         name: (identifier)
         (comment)
         value: (preproc_arg)
-        (comment)
-        value: (preproc_arg)
     )
     (preproc_def
         name: (identifier)
@@ -521,4 +519,32 @@ Comments inside a multi-line define
         name: (identifier)
         (property name: (identifier) value: (integer_cells (identifier)))
     )
+)
+
+========================================================================
+Comments inside a define value
+========================================================================
+
+#define A 0x01 /* first */ 0x02 \
+	/* second */ 0x03
+#define B(x) ((x) /* scaled */ * 2)
+#define C 1 /* trailing */
+#define D 2 // trailing
+#define E 3 // the next line belongs to this comment \
+	4
+#define F 5 / 6
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_function_def
+        name: (identifier)
+        parameters: (preproc_params (identifier))
+        value: (preproc_arg)
+    )
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
 )
