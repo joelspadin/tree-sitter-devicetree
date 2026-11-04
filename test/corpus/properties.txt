@@ -386,3 +386,21 @@ Bits on a later list element
         )
     )
 )
+
+========================================================================
+String with a newline
+========================================================================
+
+/ {
+    description = "first line
+second line";
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (string_literal))
+    )
+)

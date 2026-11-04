@@ -254,7 +254,8 @@ module.exports = grammar({
                 '"',
                 repeat(
                     choice(
-                        token.immediate(prec(1, /[^\\"\n]+/)),
+                        // dtc accepts a newline inside a string literal.
+                        token.immediate(prec(1, /[^\\"]+/)),
                         $.escape_sequence
                     )
                 ),
