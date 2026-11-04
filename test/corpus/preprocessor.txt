@@ -460,3 +460,27 @@ Preprocessor conditionals in cells
         )
     )
 )
+
+========================================================================
+Preprocessor directives between a node name and its body
+========================================================================
+
+/
+
+#define CODE_SIZE 0x40000
+#include "partition.h"
+
+{
+    reg = <CODE_SIZE>;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (preproc_def name: (identifier) value: (preproc_arg))
+        (preproc_include path: (string_literal))
+        (property name: (identifier) value: (integer_cells (identifier)))
+    )
+)

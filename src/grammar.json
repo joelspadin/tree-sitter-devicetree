@@ -474,6 +474,13 @@
           ]
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_preproc_directive"
+          }
+        },
+        {
           "type": "STRING",
           "value": "{"
         },
@@ -2343,6 +2350,31 @@
             "type": "PATTERN",
             "value": "\\r?\\n"
           }
+        }
+      ]
+    },
+    "_preproc_directive": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "preproc_include"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_def"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_function_def"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_undef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_call"
         }
       ]
     },

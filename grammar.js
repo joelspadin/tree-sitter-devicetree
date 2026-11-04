@@ -147,6 +147,9 @@ module.exports = grammar({
                         )
                     )
                 ),
+                // The preprocessor removes directives between a node name and its body, e.g.
+                // `/` followed by a block of #define lines and then `{`.
+                repeat($._preproc_directive),
                 '{',
                 repeat($._node_members),
                 '}',
@@ -455,6 +458,15 @@ module.exports = grammar({
                 preprocessor('undef'),
                 field('name', $.identifier),
                 token.immediate(/\r?\n/)
+            ),
+
+        _preproc_directive: ($) =>
+            choice(
+                $.preproc_include,
+                $.preproc_def,
+                $.preproc_function_def,
+                $.preproc_undef,
+                $.preproc_call
             ),
 
         // Any other directive, e.g. #error, #warning, #pragma or #line.
