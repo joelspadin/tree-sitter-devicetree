@@ -76,3 +76,6 @@
 (reference) @constant
 
 (comment) @comment
+(preproc_directive) @keyword
+
+(char_literal) @character
