@@ -429,11 +429,12 @@ module.exports = grammar({
                 token.immediate(/\r?\n/)
             ),
 
+        // A comment between the lines of a multi-line value splits it into several preproc_arg nodes.
         preproc_def: ($) =>
             seq(
                 preprocessor('define'),
                 field('name', $.identifier),
-                field('value', optional($.preproc_arg)),
+                field('value', optional(repeat1($.preproc_arg))),
                 token.immediate(/\r?\n/)
             ),
 
@@ -442,7 +443,7 @@ module.exports = grammar({
                 preprocessor('define'),
                 field('name', $.identifier),
                 field('parameters', $.preproc_params),
-                field('value', optional($.preproc_arg)),
+                field('value', optional(repeat1($.preproc_arg))),
                 token.immediate(/\r?\n/)
             ),
 

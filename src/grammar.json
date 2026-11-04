@@ -2172,8 +2172,11 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "preproc_arg"
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "preproc_arg"
+                }
               },
               {
                 "type": "BLANK"
@@ -2232,8 +2235,11 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "preproc_arg"
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "preproc_arg"
+                }
               },
               {
                 "type": "BLANK"

@@ -484,3 +484,41 @@ Preprocessor directives between a node name and its body
         (property name: (identifier) value: (integer_cells (identifier)))
     )
 )
+
+========================================================================
+Comments inside a multi-line define
+========================================================================
+
+#define INIT_SEQUENCE \
+	/* first group */ \
+	0x01 0x02 \
+	0x03 0x04 \
+	\
+	/* second group */ \
+	0x05 0x06
+#define ONE 1 // trailing comment
+
+/ {
+    data = <INIT_SEQUENCE>;
+};
+
+---
+
+(document
+    (preproc_def
+        name: (identifier)
+        (comment)
+        value: (preproc_arg)
+        (comment)
+        value: (preproc_arg)
+    )
+    (preproc_def
+        name: (identifier)
+        value: (preproc_arg)
+        (comment)
+    )
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (integer_cells (identifier)))
+    )
+)
