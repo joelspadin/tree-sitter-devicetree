@@ -63,3 +63,26 @@ Memreserve
         length: (integer_literal)
     )
 )
+========================================================================
+Include inside a node
+========================================================================
+
+/ {
+    soc {
+        /include/ "soc-peripherals.dtsi"
+        status = "okay";
+    };
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (node
+            name: (identifier)
+            (dtsi_include path: (string_literal))
+            (property name: (identifier) value: (string_literal))
+        )
+    )
+)

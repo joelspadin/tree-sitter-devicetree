@@ -43,3 +43,24 @@ Node addresses
         )
     )
 )
+========================================================================
+Empty unit address
+========================================================================
+
+/ {
+    port@ {
+        reg = <0>;
+    };
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (node
+            name: (identifier)
+            (property name: (identifier) value: (integer_cells (integer_literal)))
+        )
+    )
+)

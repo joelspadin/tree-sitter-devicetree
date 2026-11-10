@@ -334,3 +334,73 @@ Incbin
         )
     )
 )
+========================================================================
+Macro as property value
+========================================================================
+
+/ {
+    function = LED_FUNCTION_STATUS;
+    reg = REG(0x1000, 0x100);
+    compatible = "vendor,device", COMPAT_FALLBACK;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (identifier))
+        (property
+            name: (identifier)
+            value: (call_expression
+                function: (identifier)
+                arguments: (argument_list (integer_literal) (integer_literal))
+            )
+        )
+        (property
+            name: (identifier)
+            value: (string_literal)
+            value: (identifier)
+        )
+    )
+)
+
+========================================================================
+Bits on a later list element
+========================================================================
+
+/ {
+    data = <0 1>, /bits/ 16 <0x1234 0x5678>;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property
+            name: (identifier)
+            value: (integer_cells (integer_literal) (integer_literal))
+            bits: (integer_literal)
+            value: (integer_cells (integer_literal) (integer_literal))
+        )
+    )
+)
+
+========================================================================
+String with a newline
+========================================================================
+
+/ {
+    description = "first line
+second line";
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (string_literal))
+    )
+)

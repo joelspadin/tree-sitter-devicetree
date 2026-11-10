@@ -1,0 +1,29 @@
+================================================================================
+Comments and trailing spaces with CRLF line endings
+================================================================================
+
+#define A 1 /* trailing */ 	
+#define B 2 // trailing 	
+#define C 3 /* inner */ 4 	
+#include "a.h" 	
+#undef A 	
+#error don't "x"
+
+/ {
+    p = <A>;
+};
+
+--------------------------------------------------------------------------------
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_include path: (string_literal))
+    (preproc_undef name: (identifier))
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (integer_cells (identifier)))
+    )
+)

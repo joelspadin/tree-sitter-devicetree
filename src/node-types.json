@@ -16,6 +16,10 @@
           "named": true
         },
         {
+          "type": "char_literal",
+          "named": true
+        },
+        {
           "type": "conditional_expression",
           "named": true
         },
@@ -33,6 +37,14 @@
         },
         {
           "type": "preproc_defined",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "system_lib_string",
           "named": true
         },
         {
@@ -64,6 +76,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "char_literal",
             "named": true
           },
           {
@@ -191,6 +207,10 @@
             "named": true
           },
           {
+            "type": "char_literal",
+            "named": true
+          },
+          {
             "type": "conditional_expression",
             "named": true
           },
@@ -250,6 +270,25 @@
     }
   },
   {
+    "type": "char_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "character",
+          "named": true
+        },
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "conditional_expression",
     "named": true,
     "fields": {
@@ -271,6 +310,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "char_literal",
             "named": true
           },
           {
@@ -312,6 +355,10 @@
             "named": true
           },
           {
+            "type": "char_literal",
+            "named": true
+          },
+          {
             "type": "conditional_expression",
             "named": true
           },
@@ -347,6 +394,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "char_literal",
             "named": true
           },
           {
@@ -457,6 +508,10 @@
           "named": true
         },
         {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
           "type": "preproc_def",
           "named": true
         },
@@ -544,6 +599,10 @@
             "named": true
           },
           {
+            "type": "char_literal",
+            "named": true
+          },
+          {
             "type": "conditional_expression",
             "named": true
           },
@@ -583,6 +642,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "char_literal",
             "named": true
           },
           {
@@ -626,6 +689,10 @@
           "named": true
         },
         {
+          "type": "char_literal",
+          "named": true
+        },
+        {
           "type": "conditional_expression",
           "named": true
         },
@@ -638,6 +705,14 @@
           "named": true
         },
         {
+          "type": "preproc_if",
+          "named": true
+        },
+        {
+          "type": "preproc_ifdef",
+          "named": true
+        },
+        {
           "type": "reference",
           "named": true
         },
@@ -646,6 +721,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "macro_invocation",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "argument_list",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -740,11 +841,23 @@
           "named": true
         },
         {
+          "type": "dtsi_include",
+          "named": true
+        },
+        {
+          "type": "macro_invocation",
+          "named": true
+        },
+        {
           "type": "node",
           "named": true
         },
         {
           "type": "omit_if_no_ref",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
           "named": true
         },
         {
@@ -883,6 +996,32 @@
     "fields": {}
   },
   {
+    "type": "preproc_call",
+    "named": true,
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "preproc_arg",
+            "named": true
+          }
+        ]
+      },
+      "directive": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "preproc_directive",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "preproc_def",
     "named": true,
     "fields": {
@@ -981,6 +1120,22 @@
       "required": false,
       "types": [
         {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "char_literal",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "delete_node",
           "named": true
         },
@@ -997,6 +1152,18 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "macro_invocation",
+          "named": true
+        },
+        {
           "type": "memory_reservation",
           "named": true
         },
@@ -1010,6 +1177,10 @@
         },
         {
           "type": "plugin",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
           "named": true
         },
         {
@@ -1038,6 +1209,14 @@
         },
         {
           "type": "property",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         }
       ]
@@ -1105,6 +1284,10 @@
           "named": true
         },
         {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
           "type": "preproc_def",
           "named": true
         },
@@ -1140,6 +1323,22 @@
       "required": false,
       "types": [
         {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "char_literal",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "delete_node",
           "named": true
         },
@@ -1156,6 +1355,18 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "macro_invocation",
+          "named": true
+        },
+        {
           "type": "memory_reservation",
           "named": true
         },
@@ -1169,6 +1380,10 @@
         },
         {
           "type": "plugin",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
           "named": true
         },
         {
@@ -1197,6 +1412,14 @@
         },
         {
           "type": "property",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         }
       ]
@@ -1296,6 +1519,22 @@
       "required": false,
       "types": [
         {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "char_literal",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "delete_node",
           "named": true
         },
@@ -1312,6 +1551,18 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "macro_invocation",
+          "named": true
+        },
+        {
           "type": "memory_reservation",
           "named": true
         },
@@ -1325,6 +1576,10 @@
         },
         {
           "type": "plugin",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
           "named": true
         },
         {
@@ -1353,6 +1608,14 @@
         },
         {
           "type": "property",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         }
       ]
@@ -1396,6 +1659,22 @@
       "required": false,
       "types": [
         {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "char_literal",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "delete_node",
           "named": true
         },
@@ -1412,6 +1691,18 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "macro_invocation",
+          "named": true
+        },
+        {
           "type": "memory_reservation",
           "named": true
         },
@@ -1425,6 +1716,10 @@
         },
         {
           "type": "plugin",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
           "named": true
         },
         {
@@ -1453,6 +1748,14 @@
         },
         {
           "type": "property",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         }
       ]
@@ -1556,11 +1859,15 @@
         "required": false,
         "types": [
           {
-            "type": ",",
-            "named": false
+            "type": "byte_string_literal",
+            "named": true
           },
           {
-            "type": "byte_string_literal",
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "identifier",
             "named": true
           },
           {
@@ -1646,6 +1953,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "char_literal",
             "named": true
           },
           {
@@ -1780,6 +2091,10 @@
     "named": false
   },
   {
+    "type": "'",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -1908,6 +2223,10 @@
     "named": false
   },
   {
+    "type": "character",
+    "named": true
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true
@@ -1926,6 +2245,10 @@
   },
   {
     "type": "preproc_arg",
+    "named": true
+  },
+  {
+    "type": "preproc_directive",
     "named": true
   },
   {

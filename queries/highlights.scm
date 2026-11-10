@@ -57,6 +57,9 @@
 (call_expression
     function: (identifier) @function)
 
+(macro_invocation
+    name: (identifier) @function)
+
 (node
     label: (identifier) @label)
 
@@ -76,3 +79,6 @@
 (reference) @constant
 
 (comment) @comment
+(preproc_directive) @keyword
+
+(char_literal) @character

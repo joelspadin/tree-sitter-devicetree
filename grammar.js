@@ -34,6 +34,33 @@ const PREC = {
     SUBSCRIPT: 16,
 };
 
+// Pieces of a preprocessor directive's argument (preproc_arg). A string or character literal is
+// one piece, so comment markers inside it stay part of the value; a quote can only start one.
+const STRING_PIECE = /\/?\\?"([^"\\\n]|\\(.|\r?\n))*"/;
+const CHAR_PIECE = /\/?\\?'([^'\\\n]|\\(.|\r?\n))*'/;
+// An unterminated quote runs to the end of the value, e.g. the apostrophe in `#error don't`; the
+// other kind of quote is plain text inside it.
+const UNTERMINATED_QUOTE = choice(
+    /\/?\\?"([^"\\\r\n]|\\(.|\r?\n))*/,
+    /\/?\\?'([^'\\\r\n]|\\(.|\r?\n))*/
+);
+const PREPROC_ARG_PIECE = choice(
+    /[^\s/\\"']/,
+    /\/[^\s/*\\"']/,
+    /\/[ \t\f\v]/,
+    /\/\\\r?\n/,
+    /\/\\[^\r\n"']/,
+    /\\[^\r\n"']/,
+    STRING_PIECE,
+    CHAR_PIECE
+);
+const PREPROC_ARG_SPACE = choice(/[ \t\f\v]/, /\\\r?\n/);
+const BLOCK_COMMENT = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//;
+
+// The end of a preprocessor line. It is not token.immediate, so blanks after a directive's last token
+// or after a comment that ends the line are skipped as whitespace.
+const preprocessorLineEnd = () => /\r?\n/;
+
 module.exports = grammar({
     name: 'devicetree',
 
@@ -45,6 +72,10 @@ module.exports = grammar({
         $.property_identifier,
         $.parenthesized_expression,
     ],
+
+    // A bare macro statement followed by a directive reads like a node name followed by
+    // directives before its body; the token after the directives decides.
+    conflicts: ($) => [[$.node, $.macro_invocation]],
 
     rules: {
         document: ($) => repeat($._top_level_item),
@@ -63,7 +94,8 @@ module.exports = grammar({
                 $.preproc_function_def,
                 $.preproc_if,
                 $.preproc_ifdef,
-                $.preproc_undef
+                $.preproc_undef,
+                $.preproc_call
             ),
 
         _label: ($) => seq(field('label', $.label_identifier), ':'),
@@ -139,9 +171,16 @@ module.exports = grammar({
                     field('name', $.reference),
                     seq(
                         field('name', $.node_identifier),
-                        field('address', optional(seq('@', $.unit_address)))
+                        // dtc accepts an empty unit address (`port@ { ... };`).
+                        field(
+                            'address',
+                            optional(seq('@', optional($.unit_address)))
+                        )
                     )
                 ),
+                // The preprocessor removes directives between a node name and its body, e.g.
+                // `/` followed by a block of #define lines and then `{`.
+                repeat($._preproc_directive),
                 '{',
                 repeat($._node_members),
                 '}',
@@ -157,8 +196,13 @@ module.exports = grammar({
                 optional(
                     seq(
                         '=',
-                        field('bits', optional($._bits)),
-                        field('value', commaSep($._property_value))
+                        // dtc accepts /bits/ before any cell array of the list, not just the first.
+                        commaSep(
+                            seq(
+                                field('bits', optional($._bits)),
+                                field('value', $._property_value)
+                            )
+                        )
                     )
                 ),
                 ';'
@@ -166,6 +210,7 @@ module.exports = grammar({
 
         _node_members: ($) =>
             choice(
+                $.dtsi_include,
                 $.delete_property,
                 $.delete_node,
                 $.omit_if_no_ref,
@@ -176,7 +221,22 @@ module.exports = grammar({
                 $.preproc_function_def,
                 alias($.preproc_if_in_node, $.preproc_if),
                 alias($.preproc_ifdef_in_node, $.preproc_ifdef),
-                $.preproc_undef
+                $.preproc_undef,
+                $.preproc_call,
+                $.macro_invocation
+            ),
+
+        // A macro used as a statement in a node body, which the preprocessor expands to
+        // properties or nodes, e.g. `PIN(a, 1);` or a bare `EXTRA_PROPERTIES`. A bare
+        // name followed by `;` stays a property, as dtc reads it.
+        macro_invocation: ($) =>
+            choice(
+                seq(
+                    field('name', alias($._label_name, $.identifier)),
+                    field('arguments', $.argument_list),
+                    optional(';')
+                ),
+                field('name', alias($._label_name, $.identifier))
             ),
 
         delete_node: ($) =>
@@ -223,14 +283,26 @@ module.exports = grammar({
                 $.string_literal,
                 $.byte_string_literal,
                 $.reference,
-                $.incbin
+                $.incbin,
+                // A macro that the C preprocessor expands to a whole value, e.g.
+                // `function = LED_FUNCTION_STATUS;` or `reg = REG(0x1000);`.
+                $.identifier,
+                $.call_expression
             ),
 
-        integer_cells: ($) => seq('<', repeat($._integer_cell_items), '>'),
+        integer_cells: ($) => seq('<', repeat($._integer_cell_content), '>'),
+
+        _integer_cell_content: ($) =>
+            choice(
+                $._integer_cell_items,
+                alias($.preproc_if_in_cells, $.preproc_if),
+                alias($.preproc_ifdef_in_cells, $.preproc_ifdef)
+            ),
 
         _integer_cell_items: ($) =>
             choice(
                 $.integer_literal,
+                $.char_literal,
                 $.reference,
                 $.parenthesized_expression,
                 $.identifier,
@@ -242,7 +314,8 @@ module.exports = grammar({
                 '"',
                 repeat(
                     choice(
-                        token.immediate(prec(1, /[^\\"\n]+/)),
+                        // dtc accepts a newline inside a string literal.
+                        token.immediate(prec(1, /[^\\"]+/)),
                         $.escape_sequence
                     )
                 ),
@@ -294,6 +367,16 @@ module.exports = grammar({
             );
         },
 
+        char_literal: ($) =>
+            seq(
+                "'",
+                choice(
+                    $.escape_sequence,
+                    alias(token.immediate(/[^\n'\\]/), $.character)
+                ),
+                "'"
+            ),
+
         identifier: ($) => /[a-zA-Z_]\w*/,
 
         _expression: ($) =>
@@ -304,6 +387,7 @@ module.exports = grammar({
                 $.call_expression,
                 $.identifier,
                 $.integer_literal,
+                $.char_literal,
                 $.parenthesized_expression
             ),
 
@@ -387,7 +471,7 @@ module.exports = grammar({
                     'path',
                     choice($.string_literal, $.system_lib_string, $.identifier)
                 ),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         preproc_def: ($) =>
@@ -395,7 +479,7 @@ module.exports = grammar({
                 preprocessor('define'),
                 field('name', $.identifier),
                 field('value', optional($.preproc_arg)),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         preproc_function_def: ($) =>
@@ -404,7 +488,7 @@ module.exports = grammar({
                 field('name', $.identifier),
                 field('parameters', $.preproc_params),
                 field('value', optional($.preproc_arg)),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
         preproc_params: ($) =>
@@ -418,13 +502,76 @@ module.exports = grammar({
             seq(
                 preprocessor('undef'),
                 field('name', $.identifier),
-                token.immediate(/\r?\n/)
+                preprocessorLineEnd()
             ),
 
-        preproc_arg: ($) => token(prec(-1, /\S([^/\n]|\/[^/*]|\\\r?\n)*/)),
+        _preproc_directive: ($) =>
+            choice(
+                $.preproc_include,
+                $.preproc_def,
+                $.preproc_function_def,
+                $.preproc_undef,
+                $.preproc_call
+            ),
+
+        // Any other directive, e.g. #error, #warning, #pragma or #line.
+        preproc_call: ($) =>
+            seq(
+                field(
+                    'directive',
+                    choice(
+                        $.preproc_directive,
+                        alias($._preproc_known_directive, $.preproc_directive)
+                    )
+                ),
+                field('argument', optional($.preproc_arg)),
+                preprocessorLineEnd()
+            ),
+
+        preproc_directive: ($) => /#[ \t]*[a-zA-Z0-9]\w*/,
+
+        // Property names may start with "#" (e.g. #address-cells), so inside a node only these
+        // directives take precedence over a property name.
+        _preproc_known_directive: ($) =>
+            token(prec(2, /#[ \t]*(error|warning|pragma|line)/)),
+
+        // The rest of the logical line, from its first to its last non-blank character. Block comments
+        // between parts of the value stay inside it, as the preprocessor sees them; a comment that ends the
+        // line (and any line comment, which always runs to the end of the line) is left out and parsed as a
+        // comment. A `/` directly before a newline is not consumed, so the value cannot run into the next
+        // line.
+        preproc_arg: ($) =>
+            token(
+                prec(
+                    -1,
+                    choice(
+                        seq(
+                            PREPROC_ARG_PIECE,
+                            repeat(
+                                seq(
+                                    repeat(
+                                        choice(BLOCK_COMMENT, PREPROC_ARG_SPACE)
+                                    ),
+                                    PREPROC_ARG_PIECE
+                                )
+                            ),
+                            optional(
+                                seq(
+                                    repeat(
+                                        choice(BLOCK_COMMENT, PREPROC_ARG_SPACE)
+                                    ),
+                                    UNTERMINATED_QUOTE
+                                )
+                            )
+                        ),
+                        UNTERMINATED_QUOTE
+                    )
+                )
+            ),
 
         ...preprocIf('', ($) => $._top_level_item),
         ...preprocIf('_in_node', ($) => $._node_members),
+        ...preprocIf('_in_cells', ($) => $._integer_cell_content),
 
         _preproc_expression: ($) =>
             choice(
@@ -470,8 +617,19 @@ module.exports = grammar({
                 )
             ),
 
+        // String and <system> arguments cover __has_include("file") and __has_include(<file>).
         preproc_argument_list: ($) =>
-            seq('(', commaSep($._preproc_expression), ')'),
+            seq(
+                '(',
+                commaSep(
+                    choice(
+                        $._preproc_expression,
+                        $.string_literal,
+                        $.system_lib_string
+                    )
+                ),
+                ')'
+            ),
 
         preproc_binary_expression: ($) => {
             const table = [

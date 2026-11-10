@@ -355,3 +355,343 @@ Preprocessor expressions
         )
     )
 )
+
+========================================================================
+Other directives
+========================================================================
+
+#ifndef CAMERA_MODEL
+#error "Camera model should be defined by the board file"
+#endif
+#pragma once
+
+/ {
+    #address-cells = <1>;
+#warning "deprecated node"
+    node {};
+};
+
+---
+
+(document
+    (preproc_ifdef
+        name: (identifier)
+        (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    )
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (integer_cells (integer_literal)))
+        (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+        (node name: (identifier))
+    )
+)
+
+========================================================================
+Has include
+========================================================================
+
+#if __has_include(<dt-bindings/clock/clocks.h>)
+#include <dt-bindings/clock/clocks.h>
+#elif __has_include("local-clocks.h")
+#include "local-clocks.h"
+#endif
+
+---
+
+(document
+    (preproc_if
+        condition: (call_expression
+            function: (identifier)
+            arguments: (argument_list (system_lib_string))
+        )
+        (preproc_include path: (system_lib_string))
+        alternative: (preproc_elif
+            condition: (call_expression
+                function: (identifier)
+                arguments: (argument_list (string_literal))
+            )
+            (preproc_include path: (string_literal))
+        )
+    )
+)
+
+========================================================================
+Preprocessor conditionals in cells
+========================================================================
+
+/ {
+    dais = <&rsnd_port0
+            &rsnd_port1
+#ifdef SOC_HAS_HDMI1
+            &rsnd_port2
+#endif
+#if NUM_PORTS > 3
+            &rsnd_port3
+#else
+            0
+#endif
+    >;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (property
+            name: (identifier)
+            value: (integer_cells
+                (reference label: (identifier))
+                (reference label: (identifier))
+                (preproc_ifdef
+                    name: (identifier)
+                    (reference label: (identifier))
+                )
+                (preproc_if
+                    condition: (binary_expression
+                        left: (identifier)
+                        right: (integer_literal)
+                    )
+                    (reference label: (identifier))
+                    alternative: (preproc_else (integer_literal))
+                )
+            )
+        )
+    )
+)
+
+========================================================================
+Preprocessor directives between a node name and its body
+========================================================================
+
+/
+
+#define CODE_SIZE 0x40000
+#include "partition.h"
+
+{
+    reg = <CODE_SIZE>;
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (preproc_def name: (identifier) value: (preproc_arg))
+        (preproc_include path: (string_literal))
+        (property name: (identifier) value: (integer_cells (identifier)))
+    )
+)
+
+========================================================================
+Comments inside a multi-line define
+========================================================================
+
+#define INIT_SEQUENCE \
+	/* first group */ \
+	0x01 0x02 \
+	0x03 0x04 \
+	\
+	/* second group */ \
+	0x05 0x06
+#define ONE 1 // trailing comment
+
+/ {
+    data = <INIT_SEQUENCE>;
+};
+
+---
+
+(document
+    (preproc_def
+        name: (identifier)
+        (comment)
+        value: (preproc_arg)
+    )
+    (preproc_def
+        name: (identifier)
+        value: (preproc_arg)
+        (comment)
+    )
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (integer_cells (identifier)))
+    )
+)
+
+========================================================================
+Comments inside a define value
+========================================================================
+
+#define A 0x01 /* first */ 0x02 \
+	/* second */ 0x03
+#define B(x) ((x) /* scaled */ * 2)
+#define C 1 /* trailing */
+#define D 2 // trailing
+#define E 3 // the next line belongs to this comment \
+	4
+#define F 5 / 6
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_function_def
+        name: (identifier)
+        parameters: (preproc_params (identifier))
+        value: (preproc_arg)
+    )
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+)
+
+========================================================================
+Slashes and escapes in a define value
+========================================================================
+
+#define S "a/\"b" /* c */ "x/\n"
+#define T a/\x
+#define U 1 /* trailing */
+#define V 2
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+)
+
+========================================================================
+Trailing spaces after a directive
+========================================================================
+
+#define A 1 /* trailing */  	
+#define B 2 // trailing  	
+#define C 3  
+#define D
+#include "a.h"  
+#undef C 	
+#define E
+
+/ {
+    p = <A>;
+};
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier))
+    (preproc_include path: (string_literal))
+    (preproc_undef name: (identifier))
+    (preproc_def name: (identifier))
+    (node
+        name: (identifier)
+        (property name: (identifier) value: (integer_cells (identifier)))
+    )
+)
+
+========================================================================
+Macros used as statements in a node body
+========================================================================
+
+/ {
+    pins {
+        PIN(a-0, UP, FAST);
+        CONFIG_MACRO(1, 2)
+        prop = <1>;
+        flag;
+        EXTRA_PROPERTIES
+    };
+    split
+#include "split.h"
+    {
+    };
+};
+
+---
+
+(document
+    (node
+        name: (identifier)
+        (node
+            name: (identifier)
+            (macro_invocation
+                name: (identifier)
+                arguments: (argument_list
+                    (binary_expression left: (identifier) right: (integer_literal))
+                    (identifier)
+                    (identifier)))
+            (macro_invocation
+                name: (identifier)
+                arguments: (argument_list (integer_literal) (integer_literal)))
+            (property name: (identifier) value: (integer_cells (integer_literal)))
+            (property name: (identifier))
+            (macro_invocation name: (identifier)))
+        (node
+            name: (identifier)
+            (preproc_include path: (string_literal)))))
+
+========================================================================
+Comment markers inside quotes in a define value
+========================================================================
+
+#define A "x//y" /* t */
+#define B "http://x"
+#define F(k) "//k" k
+#define C "q\"/*r" // tail
+#define D 1 /* .. */ 2
+#define E "a\\" /* c */
+#define G "spl\
+it//here"
+#define H '/' '"' 3
+#define I a/"x//y"
+#define J 1 /* it's */ 2
+#error don't do this
+#warning "unterminated
+
+---
+
+(document
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_function_def
+        name: (identifier)
+        parameters: (preproc_params (identifier))
+        value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg))
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg)))
+
+========================================================================
+Quotes of the other kind after an unterminated quote or a backslash
+========================================================================
+
+#error don't "x"
+#warning don't "x" // c
+#define P \"a" // b
+#define Q "x 'y" // c
+#define R a/\"b" // c
+
+---
+
+(document
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (preproc_call directive: (preproc_directive) argument: (preproc_arg))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment))
+    (preproc_def name: (identifier) value: (preproc_arg) (comment)))
