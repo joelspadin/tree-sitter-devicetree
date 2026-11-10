@@ -29,6 +29,7 @@
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-config-treesitter": "^1.0.2",
+    "node-gyp": "^12.4.0",
     "prebuildify": "^6.0.1",
     "prettier": "^3.6.2",
     "tree-sitter-cli": "^0.25.10"
