@@ -32,6 +32,7 @@ jobs:
           test-python: true
           test-go: true
           test-swift: true
+          swift-version: "6.4"
       - name: Parse examples
         id: examples
         continue-on-error: true
